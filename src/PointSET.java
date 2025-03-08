@@ -3,6 +3,7 @@ import java.util.TreeSet;
 
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 public class PointSET {
@@ -31,7 +32,16 @@ public class PointSET {
     }
 
     public void draw() {
-        // TODO: Incomplete function
+        StdDraw.enableDoubleBuffering();
+        StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
+
+        Iterator<Point2D> it = tree.iterator();
+        while(it.hasNext()){
+            it.next().draw();
+        }
+
+        StdDraw.show();
     }
 
     public Iterable<Point2D> range(RectHV rect) {
@@ -74,10 +84,14 @@ public class PointSET {
     }
 
     public String stringPoint(Point2D p){
-        return "(" + p.x() + ", " + p.y() + ")";
+        if (p == null) throw new IllegalArgumentException("Point cannot be a null value");
+
+        return " (" + p.x() + ", " + p.y() + ") ";
     }
 
+    // MAIN - UNIT TESTING
     public static void main(String[] args) {
+
         // Creates new instance of the class
         PointSET set = new PointSET();
 
@@ -90,12 +104,12 @@ public class PointSET {
         StdOut.println("PointSET size: " + set.size());
 
         // Prints whether the PointSET is empty or not
-        StdOut.println("Is the PointSET empty?: " + set.isEmpty());
+        StdOut.println("Is the PointSET empty? :" + set.isEmpty());
         
         // Checks 10 random points inside the unit square
         for(int i=0; i<10; i++){
             Point2D point = new Point2D(Math.random(), Math.random());
-            StdOut.println("Is " + set.stringPoint(point) + "present among the points?: " + set.contains(point));
+            StdOut.println("Is" + set.stringPoint(point) + "present among the points? :" + set.contains(point));
         }
 
         // Prints all points present in the PointSET that are contained within the custom rectangle
@@ -106,7 +120,9 @@ public class PointSET {
 
         // Prints the nearest point in the PointSET to the argument point
         Point2D p = new Point2D(0.43, 0.45);
-        StdOut.println("Point nearest to the point " + set.stringPoint(p) + ": " + set.nearest(p));
+        StdOut.println("Point nearest to the point" + set.stringPoint(p) + ": " + set.nearest(p));
 
+        // Pictorial representation of the PointSET
+        set.draw();
     }
 }   
