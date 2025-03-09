@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -45,27 +46,40 @@ public class PointSET {
     }
 
     public Iterable<Point2D> range(RectHV rect) {
-        // TODO: Incomplete iterable/iterator
         if(rect == null) throw new IllegalArgumentException("Rectangle cannot be null");
 
-        return new Iterable<Point2D>() {
+        ArrayList<Point2D> points = new ArrayList<>();
+        Iterator<Point2D> it = tree.iterator();
 
+        Point2D minPoint = new Point2D(rect.xmin(), rect.ymin());
+        Point2D maxPoint = new Point2D(rect.xmax(), rect.ymax());
+
+        while(it.hasNext()){
+            Point2D daPoint = it.next();
+
+            int case1 = daPoint.compareTo(minPoint);
+            int case2 = daPoint.compareTo(maxPoint);
+
+            if(case1 >= 0 && case2 <= 0) points.add(daPoint);
+        }
+
+        return new Iterable<Point2D>() {
+            
             @Override
-            public Iterator<Point2D> iterator() {
-                return new Iterator<Point2D>() {
-                    Point2D points[] = new Point2D[size()];
-                    int i = 0;
+            public Iterator<Point2D> iterator() {                
+                return new Iterator<Point2D>() {                   
+                    int i=0, size = points.size();
 
                     @Override
                     public boolean hasNext() {
-                        return i < points.length;
+                        return i < size;
                     }
 
                     @Override
                     public Point2D next() {
                         if(!hasNext()) throw new UnsupportedOperationException("Unimplemented method 'next'");
 
-                        return points[i++];
+                        return points.get(i++);
                     }
                     
                 };
@@ -76,11 +90,19 @@ public class PointSET {
     }
 
     public Point2D nearest(Point2D p) {
-        // TODO: Incomplete function
         if(p == null) throw new IllegalArgumentException("Point cannot be null");
         if (tree.isEmpty()) return null;
 
-        return null;
+        Point2D p1 = tree.ceiling(p);
+        Point2D p2 = tree.floor(p);
+
+        return (computeLength(p1, p) < computeLength(p2, p)) ? p1 : p2;
+    }
+
+    private double computeLength(Point2D p, Point2D q) {
+        if(p == null || q == null) throw new IllegalArgumentException("Points cannot be null");
+
+        return Math.sqrt((Math.pow(p.x() - q.x(), 2) + Math.pow( p.y() - q.y(), 2)));
     }
 
     public String stringPoint(Point2D p){
