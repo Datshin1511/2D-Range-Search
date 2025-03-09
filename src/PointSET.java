@@ -34,8 +34,9 @@ public class PointSET {
 
     public void draw() {
         StdDraw.enableDoubleBuffering();
-        StdDraw.setXscale(0, 32768);
-        StdDraw.setYscale(0, 32768);
+        StdDraw.setXscale(0, 1);
+        StdDraw.setYscale(0, 1);
+        StdDraw.setPenRadius(0.01);
 
         Iterator<Point2D> it = tree.iterator();
         while(it.hasNext()){
@@ -56,11 +57,12 @@ public class PointSET {
 
         while(it.hasNext()){
             Point2D daPoint = it.next();
+            boolean case1 = false, case2 = false;
 
-            int case1 = daPoint.compareTo(minPoint);
-            int case2 = daPoint.compareTo(maxPoint);
+            if(daPoint.x() >= minPoint.x() && daPoint.y() >= minPoint.y()) case1 = true;
+            if(daPoint.x() <= maxPoint.x() && daPoint.y() <= maxPoint.y()) case1 = true;
 
-            if(case1 >= 0 && case2 <= 0) points.add(daPoint);
+            if(case1 && case2) points.add(daPoint);
         }
 
         return new Iterable<Point2D>() {
@@ -119,30 +121,34 @@ public class PointSET {
 
         // Inserts 30 random points inside the unit square
         for(int i=0; i<30; i++){
-            set.insert(new Point2D(Math.random(), Math.random()));
+                set.insert(new Point2D(Math.random(), Math.random()));
         }
 
         // Prints PointSET size
         StdOut.println("PointSET size: " + set.size());
 
         // Prints whether the PointSET is empty or not
-        StdOut.println("Is the PointSET empty? :" + set.isEmpty());
+        StdOut.println("\nIs the PointSET empty? :" + set.isEmpty());
         
         // Checks 10 random points inside the unit square
         for(int i=0; i<10; i++){
             Point2D point = new Point2D(Math.random(), Math.random());
-            StdOut.println("Is" + set.stringPoint(point) + "present among the points? :" + set.contains(point));
+            StdOut.println("\nIs" + set.stringPoint(point) + "present among the points? :" + set.contains(point));
         }
 
         // Prints all points present in the PointSET that are contained within the custom rectangle
-        StdOut.println("Following points are present inside a custom rectangle of (0.3, 0.1) to (0.9, 0.8)");
+        StdOut.println("\nFollowing points are present inside a custom rectangle of (0.3, 0.1) to (0.9, 0.8)");
+        StdOut.println("-------------------------------------------------------------------------------------");
+        int count = 0;
         for(Point2D point: set.range(new RectHV(0.3, 0.1, 0.9, 0.8))){
             StdOut.println(set.stringPoint(point));
+            count++;
         }
+        StdOut.println("\nPoints inside the rectangle: " + count);
 
         // Prints the nearest point in the PointSET to the argument point
         Point2D p = new Point2D(0.43, 0.45);
-        StdOut.println("Point nearest to the point" + set.stringPoint(p) + ": " + set.nearest(p));
+        StdOut.println("\nPoint nearest to the point" + set.stringPoint(p) + ": " + set.nearest(p));
 
         // Pictorial representation of the PointSET
         set.draw();
