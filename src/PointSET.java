@@ -59,8 +59,10 @@ public class PointSET {
             Point2D daPoint = it.next();
             boolean case1 = false, case2 = false;
 
-            if(daPoint.x() >= minPoint.x() && daPoint.y() >= minPoint.y()) case1 = true;
-            if(daPoint.x() <= maxPoint.x() && daPoint.y() <= maxPoint.y()) case1 = true;
+            if(daPoint.x() >= minPoint.x() && daPoint.y() >= minPoint.y()) 
+                case1 = true;
+            if(daPoint.x() <= maxPoint.x() && daPoint.y() <= maxPoint.y()) 
+                case2 = true;
 
             if(case1 && case2) points.add(daPoint);
         }
@@ -119,28 +121,31 @@ public class PointSET {
         // Creates new instance of the class
         PointSET set = new PointSET();
 
-        // Inserts 30 random points inside the unit square
-        for(int i=0; i<30; i++){
-                set.insert(new Point2D(Math.random(), Math.random()));
+        int entryPoints = 100;
+        int checkPoints = (3*entryPoints) / 100;
+
+        // Inserts 50 random points inside the unit square
+        for(int i=0; i<entryPoints; i++){
+            set.insert(new Point2D(Math.random(), Math.random()));
         }
 
         // Prints PointSET size
         StdOut.println("PointSET size: " + set.size());
 
         // Prints whether the PointSET is empty or not
-        StdOut.println("\nIs the PointSET empty? :" + set.isEmpty());
+        StdOut.println("Is the PointSET empty? :" + set.isEmpty() + "\n");
         
-        // Checks 10 random points inside the unit square
-        for(int i=0; i<10; i++){
+        // Checks 20 random points inside the unit square
+        for(int i=0; i<checkPoints; i++){
             Point2D point = new Point2D(Math.random(), Math.random());
-            StdOut.println("\nIs" + set.stringPoint(point) + "present among the points? :" + set.contains(point));
+            StdOut.println("Is" + set.stringPoint(point) + "present among the points? :" + set.contains(point));
         }
 
         // Prints all points present in the PointSET that are contained within the custom rectangle
-        StdOut.println("\nFollowing points are present inside a custom rectangle of (0.3, 0.1) to (0.9, 0.8)");
+        StdOut.println("\nFollowing points are present inside a custom rectangle of (0.2, 0.3) to (0.5, 0.6)");
         StdOut.println("-------------------------------------------------------------------------------------");
         int count = 0;
-        for(Point2D point: set.range(new RectHV(0.3, 0.1, 0.9, 0.8))){
+        for(Point2D point: set.range(new RectHV(0.3, 0.25, 0.5, 0.7))){
             StdOut.println(set.stringPoint(point));
             count++;
         }
