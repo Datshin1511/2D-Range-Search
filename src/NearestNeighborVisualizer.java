@@ -5,12 +5,12 @@ import edu.princeton.cs.algs4.StdDraw;
 public class NearestNeighborVisualizer {
 
     public static void main(String[] args) {
+        PointSET brute = new PointSET();
+        KdTree kdtree = new KdTree();
 
         // initialize the two data structures with point from file
         String filename = args[0];
         In in = new In(filename);
-        PointSET brute = new PointSET();
-        KdTree kdtree = new KdTree();
         while (!in.isEmpty()) {
             double x = in.readDouble();
             double y = in.readDouble();
@@ -18,6 +18,18 @@ public class NearestNeighborVisualizer {
             kdtree.insert(p);
             brute.insert(p);
         }
+
+        // kdtree.insert(new Point2D(0.7, 0.2));
+        // kdtree.insert(new Point2D(0.5, 0.4));
+        // kdtree.insert(new Point2D(0.2, 0.3));
+        // kdtree.insert(new Point2D(0.4, 0.7));
+        // kdtree.insert(new Point2D(0.9, 0.6));
+
+        // brute.insert(new Point2D(0.7, 0.2));
+        // brute.insert(new Point2D(0.5, 0.4));
+        // brute.insert(new Point2D(0.2, 0.3));
+        // brute.insert(new Point2D(0.4, 0.7));
+        // brute.insert(new Point2D(0.9, 0.6));
 
         // process nearest neighbor queries
         StdDraw.enableDoubleBuffering();
