@@ -108,6 +108,7 @@ public class PointSET {
 
         Point2D nearest = null;
         double nearestDistance = Double.POSITIVE_INFINITY;
+
         for (Point2D point : tree) {
             double distance = p.distanceSquaredTo(point);
             if (distance < nearestDistance) {
@@ -118,7 +119,7 @@ public class PointSET {
         return nearest;
     }
 
-    public String stringPoint(Point2D p){
+    private String stringPoint(Point2D p){
         if (p == null) throw new IllegalArgumentException("Point cannot be a null value");
 
         return " (" + p.x() + ", " + p.y() + ") ";
@@ -127,30 +128,30 @@ public class PointSET {
     // MAIN - UNIT TESTING
     public static void main(String[] args) {
 
-        // Creates new instance of the class
+        // New instance of the class
         PointSET set = new PointSET();
 
         int entryPoints = 100;
         int checkPoints = (3*entryPoints) / 100;
 
-        // Inserts 50 random points inside the unit square
+        // 50 random points inside the unit square
         for(int i=0; i<entryPoints; i++){
             set.insert(new Point2D(Math.random(), Math.random()));
         }
 
-        // Prints PointSET size
+        // PointSET size
         StdOut.println("PointSET size: " + set.size());
 
-        // Prints whether the PointSET is empty or not
+        // Whether the PointSET is empty or not
         StdOut.println("Is the PointSET empty? :" + set.isEmpty() + "\n");
         
-        // Checks 20 random points inside the unit square
+        // Checking 20 random points inside the unit square
         for(int i=0; i<checkPoints; i++){
             Point2D point = new Point2D(Math.random(), Math.random());
             StdOut.println("Is" + set.stringPoint(point) + "present among the points? :" + set.contains(point));
         }
 
-        // Prints all points present in the PointSET that are contained within the custom rectangle
+        // All points present in the PointSET that are contained within the custom rectangle
         StdOut.println("\nFollowing points are present inside a custom rectangle of (0.2, 0.3) to (0.5, 0.6)");
         StdOut.println("-------------------------------------------------------------------------------------");
         int count = 0;
@@ -160,8 +161,8 @@ public class PointSET {
         }
         StdOut.println("\nPoints inside the rectangle: " + count);
 
-        // Prints the nearest point in the PointSET to the argument point
-        Point2D p = new Point2D(0.43, 0.45);
+        // Nearest point in the PointSET to the argument point
+        Point2D p = new Point2D(0.805, 0.827);
         Point2D nearestPoint = set.nearest(p);
         StdOut.println("\nPoint nearest to the point" + set.stringPoint(p) + ": " + set.stringPoint(nearestPoint));
 
