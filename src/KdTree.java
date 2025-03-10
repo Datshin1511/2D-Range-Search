@@ -131,11 +131,11 @@ public class KdTree {
         range(node.right, rect, result);
     }
 
-    public Point2D nearest(Point2D p) {
-        if (p == null) throw new IllegalArgumentException("Rectangle is null");
+    public Point2D nearest(Point2D point) {
+        if (point == null) throw new IllegalArgumentException("Rectangle is null");
         if (isEmpty()) return null;
 
-        return nearest(root, p, root.p, root.rect.distanceSquaredTo(p));
+        return nearest(root, point, root.p, root.p.distanceSquaredTo(point));
     }
 
     private Point2D nearest(Node node, Point2D query, Point2D nearest, double nearestDistance) {
@@ -179,11 +179,11 @@ public class KdTree {
         KdTree kd = new KdTree();
 
         
-        kd.insert(new Point2D(0.7, 0.2));
-        kd.insert(new Point2D(0.5, 0.4));
-        kd.insert(new Point2D(0.2, 0.3));
-        kd.insert(new Point2D(0.4, 0.7));
-        kd.insert(new Point2D(0.9, 0.6));
+        kd.insert(new Point2D(0.5, 0.0));
+        kd.insert(new Point2D(0.0, 0.875));
+        kd.insert(new Point2D(0.125, 0.125));
+        kd.insert(new Point2D(1.0, 0.375));
+        kd.insert(new Point2D(0.875, 0.5));
         
         kd.draw();
         
@@ -194,7 +194,7 @@ public class KdTree {
             System.out.println(p);
         
         // Find the nearest neighbor to a query point
-        Point2D queryPoint = new Point2D(0.65, 0.5);
+        Point2D queryPoint = new Point2D(0.25, 0.625);
         System.out.println("Nearest point to " + queryPoint + ": " + kd.nearest(queryPoint));
     }
 }
