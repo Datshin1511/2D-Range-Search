@@ -134,18 +134,19 @@ public class KdTree {
     public Point2D nearest(Point2D p) {
         if (p == null) throw new IllegalArgumentException("Rectangle is null");
         if (isEmpty()) return null;
+
         return nearest(root, p, root.p, root.rect.distanceSquaredTo(p));
     }
 
-    private Point2D nearest(Node node, Point2D query, Point2D nearest, double nearestDist) {
+    private Point2D nearest(Node node, Point2D query, Point2D nearest, double nearestDistance) {
         if (node == null) return nearest;
         
-        if (node.rect.distanceSquaredTo(query) >= nearestDist) return nearest;
+        if (node.rect.distanceSquaredTo(query) >= nearestDistance) return nearest;
         
         double d = node.p.distanceSquaredTo(query);
-        if (d < nearestDist) {
+        if (d < nearestDistance) {
             nearest = node.p;
-            nearestDist = d;
+            nearestDistance = d;
         }
         
         Node first, second;
@@ -154,22 +155,22 @@ public class KdTree {
                 first = node.left;
                 second = node.right;
             } else {
-                first = node.left;
-                second = node.right;
+                first = node.right;
+                second = node.left;
             }
         } else {
             if (query.y() < node.p.y()) {
                 first = node.left;
                 second = node.right;
             } else {
-                first = node.left;
-                second = node.right;
+                first = node.right;
+                second = node.left;
             }
         }
         
-        nearest = nearest(first, query, nearest, nearestDist);
-        nearestDist = nearest.distanceSquaredTo(query);
-        nearest = nearest(second, query, nearest, nearestDist);
+        nearest = nearest(first, query, nearest, nearestDistance);
+        nearestDistance = nearest.distanceSquaredTo(query);
+        nearest = nearest(second, query, nearest, nearestDistance);
         
         return nearest;
     }
