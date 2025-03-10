@@ -36,6 +36,7 @@ public class PointSET {
         StdDraw.enableDoubleBuffering();
         StdDraw.setXscale(0, 1);
         StdDraw.setYscale(0, 1);
+        StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setPenRadius(0.01);
 
         Iterator<Point2D> it = tree.iterator();
@@ -50,63 +51,71 @@ public class PointSET {
         if(rect == null) throw new IllegalArgumentException("Rectangle cannot be null");
 
         ArrayList<Point2D> points = new ArrayList<>();
-        Iterator<Point2D> it = tree.iterator();
-
-        Point2D minPoint = new Point2D(rect.xmin(), rect.ymin());
-        Point2D maxPoint = new Point2D(rect.xmax(), rect.ymax());
-
-        while(it.hasNext()){
-            Point2D daPoint = it.next();
-            boolean case1 = false, case2 = false;
-
-            if(daPoint.x() >= minPoint.x() && daPoint.y() >= minPoint.y()) 
-                case1 = true;
-            if(daPoint.x() <= maxPoint.x() && daPoint.y() <= maxPoint.y()) 
-                case2 = true;
-
-            if(case1 && case2) points.add(daPoint);
-        }
-
-        return new Iterable<Point2D>() {
-            
-            @Override
-            public Iterator<Point2D> iterator() {                
-                return new Iterator<Point2D>() {                   
-                    int i=0, size = points.size();
-
-                    @Override
-                    public boolean hasNext() {
-                        return i < size;
-                    }
-
-                    @Override
-                    public Point2D next() {
-                        if(!hasNext()) throw new UnsupportedOperationException("Unimplemented method 'next'");
-
-                        return points.get(i++);
-                    }
-                    
-                };
-                
+        for (Point2D p : tree) {
+            if (rect.contains(p)) {
+                points.add(p);
             }
+        }
+        return points;
+
+        // ArrayList<Point2D> points = new ArrayList<>();
+        // Iterator<Point2D> it = tree.iterator();
+
+        // Point2D minPoint = new Point2D(rect.xmin(), rect.ymin());
+        // Point2D maxPoint = new Point2D(rect.xmax(), rect.ymax());
+
+        // while(it.hasNext()){
+        //     Point2D daPoint = it.next();
+        //     boolean case1 = false, case2 = false;
+
+        //     if(daPoint.x() >= minPoint.x() && daPoint.y() >= minPoint.y()) 
+        //         case1 = true;
+        //     if(daPoint.x() <= maxPoint.x() && daPoint.y() <= maxPoint.y()) 
+        //         case2 = true;
+
+        //     if(case1 && case2) points.add(daPoint);
+        // }
+
+        // return new Iterable<Point2D>() {
             
-        };
+        //     @Override
+        //     public Iterator<Point2D> iterator() {                
+        //         return new Iterator<Point2D>() {                   
+        //             int i=0, size = points.size();
+
+        //             @Override
+        //             public boolean hasNext() {
+        //                 return i < size;
+        //             }
+
+        //             @Override
+        //             public Point2D next() {
+        //                 if(!hasNext()) throw new UnsupportedOperationException("Unimplemented method 'next'");
+
+        //                 return points.get(i++);
+        //             }
+                    
+        //         };
+                
+        //     }
+            
+        // };
     }
 
     public Point2D nearest(Point2D p) {
         if(p == null) throw new IllegalArgumentException("Point cannot be null");
         if (tree.isEmpty()) return null;
 
-        Point2D p1 = tree.ceiling(p);
-        Point2D p2 = tree.floor(p);
-
-        return (computeLength(p1, p) < computeLength(p2, p)) ? p1 : p2;
-    }
-
-    private double computeLength(Point2D p, Point2D q) {
-        if(p == null || q == null) throw new IllegalArgumentException("Points cannot be null");
-
-        return Math.sqrt((Math.pow(p.x() - q.x(), 2) + Math.pow( p.y() - q.y(), 2)));
+        Point2D nearest = null;
+        double nearestDistance = Double.POSITIVE_INFINITY;
+        for (Point2D point : tree) {
+            double distance = p.distanceSquaredTo(point);
+            if (distance < nearestDistance) {
+                nearestDistance = distance;
+                nearest = point;
+            }
+        }
+        return nearest;
     }
 
     public String stringPoint(Point2D p){
@@ -153,9 +162,18 @@ public class PointSET {
 
         // Prints the nearest point in the PointSET to the argument point
         Point2D p = new Point2D(0.43, 0.45);
-        StdOut.println("\nPoint nearest to the point" + set.stringPoint(p) + ": " + set.nearest(p));
+        Point2D nearestPoint = set.nearest(p);
+        StdOut.println("\nPoint nearest to the point" + set.stringPoint(p) + ": " + set.stringPoint(nearestPoint));
 
-        // Pictorial representation of the PointSET
+        // Pictorial representation of the PointSET and nearest point
+        StdDraw.setPenColor(StdDraw.BLUE);
+        StdDraw.setPenRadius(0.01);
+        p.draw();
+
+        StdDraw.setPenColor(StdDraw.RED);
+        StdDraw.setPenRadius(0.02);
+        nearestPoint.draw();
+
         set.draw();
     }
 }   
