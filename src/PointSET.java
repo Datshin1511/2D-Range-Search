@@ -12,7 +12,7 @@ public class PointSET {
 
     public PointSET() {
         this.tree = new TreeSet<>();
-    }   
+    }
 
     public boolean isEmpty() {
         return size() == 0;
@@ -23,12 +23,12 @@ public class PointSET {
     }
 
     public void insert(Point2D p) {
-        if(p == null) throw new IllegalArgumentException("Point cannot be null");
+        if (p == null) throw new IllegalArgumentException("Point cannot be null");
         tree.add(p);
     }
 
     public boolean contains(Point2D p) {
-        if(p == null) throw new IllegalArgumentException("Point cannot be null");
+        if (p == null) throw new IllegalArgumentException("Point cannot be null");
         return tree.contains(p);
     }
 
@@ -40,7 +40,7 @@ public class PointSET {
         StdDraw.setPenRadius(0.01);
 
         Iterator<Point2D> it = tree.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             it.next().draw();
         }
 
@@ -48,7 +48,7 @@ public class PointSET {
     }
 
     public Iterable<Point2D> range(RectHV rect) {
-        if(rect == null) throw new IllegalArgumentException("Rectangle cannot be null");
+        if (rect == null) throw new IllegalArgumentException("Rectangle cannot be null");
 
         ArrayList<Point2D> points = new ArrayList<>();
         for (Point2D p : tree) {
@@ -57,53 +57,10 @@ public class PointSET {
             }
         }
         return points;
-
-        // ArrayList<Point2D> points = new ArrayList<>();
-        // Iterator<Point2D> it = tree.iterator();
-
-        // Point2D minPoint = new Point2D(rect.xmin(), rect.ymin());
-        // Point2D maxPoint = new Point2D(rect.xmax(), rect.ymax());
-
-        // while(it.hasNext()){
-        //     Point2D daPoint = it.next();
-        //     boolean case1 = false, case2 = false;
-
-        //     if(daPoint.x() >= minPoint.x() && daPoint.y() >= minPoint.y()) 
-        //         case1 = true;
-        //     if(daPoint.x() <= maxPoint.x() && daPoint.y() <= maxPoint.y()) 
-        //         case2 = true;
-
-        //     if(case1 && case2) points.add(daPoint);
-        // }
-
-        // return new Iterable<Point2D>() {
-            
-        //     @Override
-        //     public Iterator<Point2D> iterator() {                
-        //         return new Iterator<Point2D>() {                   
-        //             int i=0, size = points.size();
-
-        //             @Override
-        //             public boolean hasNext() {
-        //                 return i < size;
-        //             }
-
-        //             @Override
-        //             public Point2D next() {
-        //                 if(!hasNext()) throw new UnsupportedOperationException("Unimplemented method 'next'");
-
-        //                 return points.get(i++);
-        //             }
-                    
-        //         };
-                
-        //     }
-            
-        // };
     }
 
     public Point2D nearest(Point2D p) {
-        if(p == null) throw new IllegalArgumentException("Point cannot be null");
+        if (p == null) throw new IllegalArgumentException("Point cannot be null");
         if (tree.isEmpty()) return null;
 
         Point2D nearest = null;
@@ -119,23 +76,21 @@ public class PointSET {
         return nearest;
     }
 
-    private String stringPoint(Point2D p){
+    private String stringPoint(Point2D p) {
         if (p == null) throw new IllegalArgumentException("Point cannot be a null value");
-
         return " (" + p.x() + ", " + p.y() + ") ";
     }
 
     // MAIN - UNIT TESTING
     public static void main(String[] args) {
-
         // New instance of the class
         PointSET set = new PointSET();
 
         int entryPoints = 100;
-        int checkPoints = (3*entryPoints) / 100;
+        int checkPoints = (3 * entryPoints) / 100;
 
         // 50 random points inside the unit square
-        for(int i=0; i<entryPoints; i++){
+        for (int i = 0; i < entryPoints; i++) {
             set.insert(new Point2D(Math.random(), Math.random()));
         }
 
@@ -143,19 +98,19 @@ public class PointSET {
         StdOut.println("PointSET size: " + set.size());
 
         // Whether the PointSET is empty or not
-        StdOut.println("Is the PointSET empty? :" + set.isEmpty() + "\n");
-        
+        StdOut.println("Is the PointSET empty? : " + set.isEmpty() + "\n");
+
         // Checking 20 random points inside the unit square
-        for(int i=0; i<checkPoints; i++){
+        for (int i = 0; i < checkPoints; i++) {
             Point2D point = new Point2D(Math.random(), Math.random());
-            StdOut.println("Is" + set.stringPoint(point) + "present among the points? :" + set.contains(point));
+            StdOut.println("Is" + set.stringPoint(point) + "present among the points? : " + set.contains(point));
         }
 
         // All points present in the PointSET that are contained within the custom rectangle
         StdOut.println("\nFollowing points are present inside a custom rectangle of (0.2, 0.3) to (0.5, 0.6)");
         StdOut.println("-------------------------------------------------------------------------------------");
         int count = 0;
-        for(Point2D point: set.range(new RectHV(0.3, 0.25, 0.5, 0.7))){
+        for (Point2D point : set.range(new RectHV(0.3, 0.25, 0.5, 0.7))) {
             StdOut.println(set.stringPoint(point));
             count++;
         }
@@ -177,4 +132,4 @@ public class PointSET {
 
         set.draw();
     }
-}   
+}
